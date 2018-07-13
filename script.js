@@ -1,12 +1,4 @@
-const regex_ytPlaylist = new RegExp(/^.*(youtu.com\/|list=)([^#\&\?]*).*/)
-/* 
-const url = "https://www.youtube.com/watch?v=pSEax6Rr-xI&list=PL2972E0D013FE7DE7aaa"
-if (url.match(regex_ytPlaylist))
-  console.log('match !')
-else
-  console.log('no match !')
-*/
-
+// const regex_ytPlaylist = new RegExp(/^.*(youtu.com\/|list=)([^#\&\?]*).*/)
 const nbVideos = Array.from(document.querySelectorAll('#index')).pop().innerText
 
 const times = Array
@@ -26,16 +18,16 @@ const addTime = (acc, current) => {
 }
 
 const total = times.reduce(addTime, { h: 0, m: 0, s: 0 })
-let { h, m, s } = total // { h: 1, m: 315, s: 713 }
+let { h, m, s } = total
 
-let retainer = s - (s % 60) // 713 - (713 % 60)= 660
-s -= retainer // 713 - 660 = 53
+let retainer = s - (s % 60)
+s -= retainer
 
-m += (retainer / 60) // 315 + (660 / 60) = 326
-retainer = m - (m % 60) // 326 - (326 % 60)= 300
-m -= retainer // 326 - 300 = 26
+m += (retainer / 60)
+retainer = m - (m % 60)
+m -= retainer
 
-h += (retainer / 60) // 1 + (300 / 60) = 6
+h += (retainer / 60)
 
-console.log(`${h}h ${m}m ${s}s`) // 6h 26m 53s
-alert(`${h}h ${m}m ${s}s`) // 6h 26m 53s
+console.log(`${h}h ${m}m ${s}s`)
+alert(`${h}h ${m}m ${s}s`)
