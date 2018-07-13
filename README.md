@@ -12,7 +12,7 @@ Unfortunately, you cannot run it while you're watching the playlist. (*maybe I'l
 2. You'll be redirect to a page like this :
 ![step-2](step-2.png)
 
-3. Paste my code into the browser console (access with `Ctrl+Shift+i` and type 'Enter' to get your result :smirk:
+3. Paste my code into the browser console (access it with `Ctrl+Shift+i`) and type 'Enter' to get your result :smirk:
 ![step-3](step-3.jpg)
 
 > Don't judge me, I was bored...
