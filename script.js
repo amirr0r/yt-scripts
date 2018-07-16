@@ -17,7 +17,7 @@ const addTime = (acc, current, i) => {
   return acc
 }
 
-const total = times.reduce(addTime, { h: 0, m: 0, s: 0 })
+const total = times.reduce(addTime, { d: 0, h: 0, m: 0, s: 0 })
 let { h, m, s } = total
 
 let retainer = s - (s % 60)
@@ -33,5 +33,5 @@ h -= retainer
 
 d = retainer / 24
 
-console.log(`${d}d ${h}h ${m}m ${s}s`)
-alert(`${d}d ${h}h ${m}m ${s}s`)
+console.log(`${d}day(s) ${h}h ${m}m ${s}s`)
+alert(`${d}day(s) ${h}h ${m}m ${s}s`)
