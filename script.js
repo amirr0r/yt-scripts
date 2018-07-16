@@ -10,7 +10,7 @@ const times = Array
 
 const addTime = (acc, current, i) => {
   const [hours, minutes, seconds] = current
-  console.log(`Video ${i} => hours: ${hours} minutes: ${minutes} seconds: ${seconds}`)
+  console.log(`Video ${i + 1} => hours: ${hours} minutes: ${minutes} seconds: ${seconds}`)
   acc.s += seconds
   acc.m += minutes
   acc.h += hours
