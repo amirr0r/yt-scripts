@@ -18,7 +18,7 @@ const addTime = (acc, current, i) => {
 }
 
 const total = times.reduce(addTime, { d: 0, h: 0, m: 0, s: 0 })
-let { h, m, s } = total
+let { d, h, m, s } = total
 
 let retainer = s - (s % 60)
 s -= retainer
