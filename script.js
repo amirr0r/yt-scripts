@@ -3,7 +3,7 @@ const nbVideos = Array.from(document.querySelectorAll('#index')).pop().innerText
 
 const times = Array
   .from(document.querySelectorAll('.style-scope.ytd-thumbnail-overlay-time-status-renderer'))
-  .slice(0, nbVideos)
+  .slice(1, nbVideos)
   .map(item => item.innerText.replace('↵', '').trim().split(':').map(Number))
   .map(t => t.length === 2 ? [0].concat(t) : t)
 
