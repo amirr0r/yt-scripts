@@ -33,5 +33,5 @@ h -= retainer
 
 d = retainer / 24
 
-console.log(`${d}day(s) ${h}h ${m}m ${s}s`)
-alert(`${d}day(s) ${h}h ${m}m ${s}s`)
+console.log(`${d}day{d > 1 ? 's' : ''} ${h}h ${m}m ${s}s`)
+alert(`${d}day{d > 1 ? 's' : ''} ${h}h ${m}m ${s}s`)
