@@ -28,6 +28,10 @@ retainer = m - (m % 60)
 m -= retainer
 
 h += (retainer / 60)
+retainer = h - (h % 24)
+h -= retainer
 
-console.log(`${h}h ${m}m ${s}s`)
-alert(`${h}h ${m}m ${s}s`)
+d = retainer / 24
+
+console.log(`${d}d ${h}h ${m}m ${s}s`)
+alert(`${d}d ${h}h ${m}m ${s}s`)
