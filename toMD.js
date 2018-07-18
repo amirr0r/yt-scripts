@@ -32,15 +32,3 @@ if (playlistName.match(regex_ytPlaylist))
     console.error('Youtube Playlist URL invalid')
   }
 }
-
-
-/* if (print)
-
-nightmare
-  .goto(playlistName)
-  .evaluate(
-
-  )
-
-
-*/
