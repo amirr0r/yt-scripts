@@ -78,7 +78,7 @@ const howLong = playlistName => nightmare
   .catch(console.error)
   
 /*******************************************
- download : download all videos into mp3/mp4 
+ download : download all videos into mp4 
 ********************************************/
 // Shortest Playlist : https://www.youtube.com/playlist?list=PLHJH2BlYG-EEBtw2y1njWpDukJSTs8Qqx
   
