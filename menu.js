@@ -82,10 +82,10 @@ const howLong = playlistName => nightmare
 ********************************************/
 // Shortest Playlist : https://www.youtube.com/playlist?list=PLHJH2BlYG-EEBtw2y1njWpDukJSTs8Qqx
 
-const download = playlistName => nightmare
+const download = (playlistName, start = 0, end)  => nightmare
   .goto(playlistName)
   .wait(300)
-  .evaluate(async () => Array
+  .evaluate(() => Array
     .from(document.querySelectorAll('.yt-simple-endpoint.style-scope.ytd-playlist-video-renderer'))
     .map((a, i) => ({
       i: i + 1,
@@ -95,22 +95,26 @@ const download = playlistName => nightmare
   )
   .end()
   .then(links => links
+    .slice(start ? start - 1 : start, end)
     .map(a => ytdl(a.l, { filter: (format) => format.container === 'mp4' })
       .pipe(fs.createWriteStream(`${a.i < 10 ? '0' + a.i : a.i} - ${a.t}.mp4`))
-      .on('open', () => console.log(`${a.i < 10 ? '0' + a.i : a.i} - ${a.t}.mp4 is saved !`))
+      .on('open', () => console.log(`Saving ${a.i < 10 ? '0' + a.i : a.i} - ${a.t}.mp4 is in progress !`))
 	  )
   )
   // .then(console.log)
   .catch(console.error)
-
+  
 /************************************************
  menu : ask which function the user wants to run
 ************************************************/
 const goodChoice = choice => choice === '1' || choice === '2' || choice === '3'
+  
 
 const menu = (playlistName) => {
-  let choice = process.argv[3]
-
+    let choice = process.argv[3]
+    const start = process.argv[4]
+    const end = process.argv[5]
+  
   while (!choice || !goodChoice(choice)) {
     choice = readline.question(`
     1) Get the total duration of a youtube playlist
@@ -135,14 +139,14 @@ const menu = (playlistName) => {
     case 3:
       console.log(playlistName, '\n')
       console.log('Please wait...\n')
-      download(playlistName)
+      download(playlistName, start, end)
       break;
 
     case 4:
       console.log('Please wait...\n')
       howLong(playlistName)
       toMD(playlistName)
-      download(playlistName)
+      download(playlistName, start, end)
       break;
 
     default:
@@ -154,7 +158,7 @@ const menu = (playlistName) => {
  main
 ************************************************/
 if (process.argv.length === 2) {
-  console.log(`Usage : node script.js <youtube-playlist-url> [option]`)
+  console.log(`Usage : node script.js <youtube-playlist-url> [options...[from]..[to]]`)
 } else {
 
   const regex_ytPlaylist = new RegExp(/^.*(youtu.com\/|list=)([^#\&\?]*).*/)
