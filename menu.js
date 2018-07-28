@@ -10,7 +10,7 @@ const handleError = err => err
   : console.log('Saved !')
 
 /*******************************************
- toMd : create md files with video titles  *     
+ toMd : create md files with video titles  *
 ********************************************/
 
 const toMD = playlistName => nightmare
@@ -26,7 +26,7 @@ const toMD = playlistName => nightmare
   .catch(console.error)
 
 /**************************************************
- howLong : give the total duration of the playlist 
+ howLong : give the total duration of the playlist
 **************************************************/
 const addTime = (acc, current, i) => {
   const [hours, minutes, seconds] = current
@@ -61,7 +61,7 @@ const sumTimes = times => {
 
 const howLong = playlistName => nightmare
   .goto(playlistName)
-  .wait(300)
+  .wait(10000)
   .evaluate(() => {
     const nbVideos = Array.from(document.querySelectorAll('#index')).pop().innerText
 
@@ -70,46 +70,52 @@ const howLong = playlistName => nightmare
       .slice(0, nbVideos + 1)
       .map(item => item.innerText.replace('↵', '').trim().split(':').map(Number))
       .map(t => t.length === 2 ? [0].concat(t) : t)
-    
+
     return times
   })
   .end()
   .then(sumTimes)
   .catch(console.error)
-  
+
 /*******************************************
- download : download all videos into mp4 
+ download : download all videos into mp4
 ********************************************/
 // Shortest Playlist : https://www.youtube.com/playlist?list=PLHJH2BlYG-EEBtw2y1njWpDukJSTs8Qqx
-  
+
 const download = playlistName => nightmare
-.goto(playlistName)
-.wait(300)
-.evaluate(() => Array
-  .from(document.querySelectorAll('.yt-simple-endpoint.style-scope.ytd-playlist-video-renderer'))
-  .map((a, i) => ({ i: i + 1, t: a.innerText.trim().split('\n')[1], l: a.href }))
-)
-.end()
-.then(links => links
-  .map(a => ytdl(a.l, { filter: (format) => format.container === 'mp4' })
-    .pipe(fs.createWriteStream(`${a.i < 10 ? '0' + a.i : a.i} - ${a.t}.mp4`))
-    .on('open', () => console.log(`${a.i < 10 ? '0' + a.i : a.i} - ${a.t}.mp4 is saved !`))
+  .goto(playlistName)
+  .wait(300)
+  .evaluate(async () => Array
+    .from(document.querySelectorAll('.yt-simple-endpoint.style-scope.ytd-playlist-video-renderer'))
+    .map((a, i) => ({
+      i: i + 1,
+      t: a.querySelector('#video-title').textContent.trim(), 
+      l: a.href 
+    }))
   )
-).catch(console.error)
+  .end()
+  .then(links => links
+    .map(a => ytdl(a.l, { filter: (format) => format.container === 'mp4' })
+      .pipe(fs.createWriteStream(`${a.i < 10 ? '0' + a.i : a.i} - ${a.t}.mp4`))
+      .on('open', () => console.log(`${a.i < 10 ? '0' + a.i : a.i} - ${a.t}.mp4 is saved !`))
+	  )
+  )
+  // .then(console.log)
+  .catch(console.error)
 
 /************************************************
- menu : ask which function the user wants to run 
+ menu : ask which function the user wants to run
 ************************************************/
 const goodChoice = choice => choice === '1' || choice === '2' || choice === '3'
 
 const menu = (playlistName) => {
-  let choice = process.argv[3] 
+  let choice = process.argv[3]
 
   while (!choice || !goodChoice(choice)) {
     choice = readline.question(`
     1) Get the total duration of a youtube playlist
     2) Create md files with video titles
-    3) Download videos (mp3/mp4)
+    3) Download videos (mp4)
     4) Do all this
 
     Choose an option : `)
@@ -125,12 +131,13 @@ const menu = (playlistName) => {
       console.log('Please wait a little bit...\n')
       toMD(playlistName)
       break;
-      
+
     case 3:
+      console.log(playlistName, '\n')
       console.log('Please wait...\n')
       download(playlistName)
       break;
-      
+
     case 4:
       console.log('Please wait...\n')
       howLong(playlistName)
